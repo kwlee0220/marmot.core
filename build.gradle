@@ -39,9 +39,10 @@ ext {
 }
 
 dependencies {
-	api project(':utils')
-	api project(':utilsx')
-	api project(':marmot.common')
+	implementation project(':utils')
+	implementation project(':utilsx')
+	implementation project(':marmot.common')
+//	implementation project(':marmot.client')
 	
 	implementation ("org.apache.hadoop:hadoop-client:${hadoop_version}") {
 		exclude group: 'com.google.guava'		// shadow 시킬 목적
