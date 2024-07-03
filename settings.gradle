@@ -7,5 +7,3 @@ project(':utilsx').projectDir = file('../../common/utilsx')
 
 include ':marmot.common'
 project(':marmot.common').projectDir = file('../marmot.common')
-//include ':marmot.client'
-//project(':marmot.client').projectDir = file('../marmot.client')
