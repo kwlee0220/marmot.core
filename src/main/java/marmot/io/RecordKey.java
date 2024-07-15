@@ -5,12 +5,13 @@ import java.util.Objects;
 
 import com.google.common.base.Preconditions;
 
+import utils.stream.FStream;
+
 import marmot.Record;
 import marmot.RecordSchema;
 import marmot.optor.KeyColumn;
 import marmot.optor.NullsOrder;
 import marmot.optor.SortOrder;
-import utils.stream.FStream;
 
 /**
  * 
@@ -62,7 +63,7 @@ public final class RecordKey implements Comparable<RecordKey> {
 		m_keyCols.streamKeyColumns()
 				.map(kc -> record.get(kc.name()))
 				.zipWithIndex()
-				.forEach(t -> m_values[t._2] = t._1);
+				.forEach(t -> m_values[t.index()] = t.value());
 	}
 	
 	public int length() {
