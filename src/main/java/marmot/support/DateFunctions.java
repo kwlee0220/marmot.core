@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-import utils.Utilities;
+import utils.LocalDates;
 import utils.script.MVELFunction;
 
 /**
@@ -62,7 +62,7 @@ public class DateFunctions {
 
 	@MVELFunction(name="DateFromMillis")
 	public static LocalDate DateFromMillis(long millis) {
-		return Utilities.fromUTCEpocMillis(millis).toLocalDate();
+		return LocalDates.fromUtcMillis(millis);
 	}
 	
 	@MVELFunction(name="DateToMillis")

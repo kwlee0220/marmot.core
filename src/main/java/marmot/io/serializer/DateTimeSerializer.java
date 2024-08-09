@@ -4,8 +4,9 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.time.LocalDateTime;
 
+import utils.LocalDateTimes;
+
 import marmot.type.DataType;
-import utils.Utilities;
 
 /**
  * 
@@ -19,13 +20,13 @@ public class DateTimeSerializer implements ComparableMarmotSerDe<LocalDateTime> 
 	
 	@Override
 	public void serialize(LocalDateTime obj, DataOutput out) {
-		long millis = Utilities.toUTCEpocMillis((LocalDateTime)obj);
+		long millis = LocalDateTimes.toUtcMillis(obj);
 		MarmotSerializers.writeLong(millis, out);
 	}
 
 	@Override
 	public LocalDateTime deserialize(DataInput in) {
-		return Utilities.fromUTCEpocMillis(MarmotSerializers.readLong(in)).toLocalDateTime();
+		return LocalDateTimes.fromUtcMillis(MarmotSerializers.readLong(in));
 	}
 
 	@Override
