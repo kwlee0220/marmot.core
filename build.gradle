@@ -76,7 +76,6 @@ dependencies {
 }
 
 task sourceJar(type: Jar) {
-	classifier 'sources'
 	from sourceSets.main.allSource
 }
 
@@ -85,7 +84,6 @@ javadoc {
 	options.charSet = 'UTF-8'
 }
 task javadocJar(type: Jar) {
-	classifier 'javadoc'
 	from javadoc.destinationDir
 }
 
