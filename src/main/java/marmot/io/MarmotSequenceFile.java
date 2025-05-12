@@ -31,6 +31,15 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import utils.KeyValue;
+import utils.StopWatch;
+import utils.UnitUtils;
+import utils.Utilities;
+import utils.func.FOption;
+import utils.func.Lazy;
+import utils.io.IOUtils;
+import utils.stream.KeyValueFStream;
+
 import marmot.Column;
 import marmot.Record;
 import marmot.RecordSchema;
@@ -39,14 +48,6 @@ import marmot.dataset.GeometryColumnInfo;
 import marmot.support.DefaultRecord;
 import marmot.support.HadoopUtils;
 import marmot.support.ProgressReportable;
-import utils.StopWatch;
-import utils.UnitUtils;
-import utils.Utilities;
-import utils.func.FOption;
-import utils.KeyValue;
-import utils.func.Lazy;
-import utils.io.IOUtils;
-import utils.stream.KVFStream;
 
 
 /**
@@ -187,9 +188,9 @@ public class MarmotSequenceFile {
 	}
 	
 	private static FileInfo loadFileInfo(HdfsPath start) {
-		Map<String,String> metadata = KVFStream.from(loadMetadata(start).getMetadata())
-											.mapKeyValue((k,v) -> KeyValue.of(k.toString(), v.toString()))
-											.toMap();
+		Map<String,String> metadata = KeyValueFStream.from(loadMetadata(start).getMetadata())
+													.mapKeyValue((k,v) -> KeyValue.of(k.toString(), v.toString()))
+													.toMap();
 		
 		String schemaStr = metadata.remove(KEY_SCHEMA);
 		if ( schemaStr == null ) {

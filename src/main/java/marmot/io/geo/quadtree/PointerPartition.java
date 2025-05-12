@@ -3,6 +3,7 @@ package marmot.io.geo.quadtree;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.locationtech.jts.geom.Envelope;
@@ -11,10 +12,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
-import marmot.io.serializer.MarmotSerializable;
-import marmot.io.serializer.MarmotSerializers;
 import utils.stream.FStream;
 import utils.stream.KeyedGroups;
+
+import marmot.io.serializer.MarmotSerializable;
+import marmot.io.serializer.MarmotSerializers;
 
 
 /**
@@ -179,9 +181,10 @@ public final class PointerPartition implements Partition<Pointer>, MarmotSeriali
 	private List<EnvelopedValue> compact() {
 		List<EnvelopedValue> compacteds = Lists.newArrayList();
 		KeyedGroups<Envelope,EnvelopedValue> groups = FStream.from(m_slots)
-														.groupByKey(v -> v.getEnvelope());
+															.tagKey(v -> v.getEnvelope())
+															.groupByKey();
 		for ( Envelope key: groups.keySet() ) {
-			List<EnvelopedValue> group = groups.getOrEmptyList(key);
+			List<EnvelopedValue> group = groups.getOrDefault(key, Collections.emptyList());
 			
 			if ( group.size() == 1 ) {
 				compacteds.add(group.get(0));

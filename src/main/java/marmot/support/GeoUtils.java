@@ -26,8 +26,9 @@ import com.google.common.collect.Lists;
 
 import marmot.geo.GeoClientUtils;
 import marmot.type.DataType;
+
+import utils.Tuple;
 import utils.func.FOption;
-import utils.func.Tuple;
 import utils.stream.FStream;
 
 

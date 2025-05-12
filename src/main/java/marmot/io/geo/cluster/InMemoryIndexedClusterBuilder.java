@@ -2,7 +2,6 @@ package marmot.io.geo.cluster;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.concurrent.GuardedBy;
@@ -94,7 +93,8 @@ public class InMemoryIndexedClusterBuilder implements Supplier<InMemoryQuadClust
 				Map<String, InMemoryQuadCluster> clusters
 					= qtree.streamLeafNodes()
 						.map(node -> node.getPartition().toCluster(node.getQuadKey(), m_gschema))
-						.toMap(InMemoryQuadCluster::getQuadKey, Function.identity());
+						.tagKey(InMemoryQuadCluster::getQuadKey)
+						.toMap();
 				
 				// 생성된 cluster로부터 cluster index를 생성한다.
 				synchronized ( this ) {

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.locationtech.jts.geom.Coordinate;
@@ -24,6 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+
+import utils.Utilities;
+import utils.io.IOUtils;
+import utils.io.IOUtils.CopyStream;
+import utils.io.Lz4Compressions;
+import utils.stream.FStream;
 
 import marmot.GRecordSchema;
 import marmot.Record;
@@ -38,11 +43,6 @@ import marmot.io.MarmotSequenceFile.FileInfo;
 import marmot.io.RecordWritable;
 import marmot.support.DefaultRecord;
 import marmot.type.MapTile;
-import utils.Utilities;
-import utils.io.IOUtils;
-import utils.io.IOUtils.CopyStream;
-import utils.io.Lz4Compressions;
-import utils.stream.FStream;
 
 
 /**
@@ -89,7 +89,8 @@ public class SpatialClusterFile implements QuadClusterFile<SpatialCluster>, Seri
 		
 		m_scInfos = idxFile.read().fstream()
 							.map(rec -> SpatialClusterInfo.from(rec))
-							.toMap(SpatialClusterInfo::quadKey, Function.identity());
+							.tagKey(SpatialClusterInfo::quadKey)
+							.toMap();
 		
 		m_quadBounds = new Envelope();
 		m_dataBounds = new Envelope();

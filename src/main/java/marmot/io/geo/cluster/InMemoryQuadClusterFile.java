@@ -19,8 +19,9 @@ import marmot.dataset.GeometryColumnInfo;
 import marmot.geo.CoordinateTransform;
 import marmot.support.EnvelopeTaggedRecord;
 import marmot.type.MapTile;
+
+import utils.Tuple;
 import utils.Utilities;
-import utils.func.Tuple;
 import utils.stream.FStream;
 
 /**

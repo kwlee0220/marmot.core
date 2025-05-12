@@ -24,8 +24,9 @@ import marmot.optor.support.colexpr.ColumnSelectionExprParser.FullColNameListCon
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.IdListContext;
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.NamespaceContext;
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.SelectionExprContext;
+
+import utils.Tuple;
 import utils.Utilities;
-import utils.func.Tuple;
 import utils.stream.FStream;
 
 /**

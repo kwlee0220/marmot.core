@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import utils.KeyValue;
+import utils.StopWatch;
+import utils.UnitUtils;
+import utils.stream.FStream;
+
 import marmot.Record;
 import marmot.RecordSchema;
 import marmot.RecordSet;
@@ -25,10 +30,6 @@ import marmot.plan.SpatialJoinOptions;
 import marmot.rset.AbstractRecordSet;
 import marmot.support.EnvelopeTaggedRecord;
 import marmot.support.ProgressReportable;
-import utils.StopWatch;
-import utils.UnitUtils;
-import utils.KeyValue;
-import utils.stream.FStream;
 
 
 /**
@@ -92,7 +93,8 @@ public class ClusteredNLJoinRecordSet extends AbstractRecordSet implements Progr
 											.map(b -> KeyValue.of(b.quadkey(), rec));
 						})
 						.toKeyValueStream(kv -> kv)
-						.findBiggestGroupWithinWindow(MAX_WINDOW_SIZE, MIN_WINDOW_SIZE)
+						.liftKeyValues(input -> new FindBiggestGroupWithinWindow<>(input, MAX_WINDOW_SIZE, MIN_WINDOW_SIZE))
+//						.findBiggestGroupWithinWindow(MAX_WINDOW_SIZE, MIN_WINDOW_SIZE)
 						.flatMap(kv -> joinWithOuterGroup(kv.key(), kv.value()));
 	}
 

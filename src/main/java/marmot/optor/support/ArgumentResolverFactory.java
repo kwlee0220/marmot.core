@@ -7,7 +7,7 @@ import org.mvel2.integration.VariableResolverFactory;
 import org.mvel2.integration.impl.BaseVariableResolverFactory;
 import org.mvel2.integration.impl.SimpleValueResolver;
 
-import utils.stream.KVFStream;
+import utils.stream.KeyValueFStream;
 
 /**
  * 
@@ -18,9 +18,9 @@ class ArgumentResolverFactory extends BaseVariableResolverFactory {
 	private final Map<String,VariableResolver> m_resolvers;
 	
 	ArgumentResolverFactory(Map<String,Object> arguments) {
-		m_resolvers = KVFStream.from(arguments)
-								.mapValue(v -> (VariableResolver)new SimpleValueResolver(v))
-								.toMap();
+		m_resolvers = KeyValueFStream.from(arguments)
+									.mapValue(v -> (VariableResolver)new SimpleValueResolver(v))
+									.toMap();
 	}
 	
 	public VariableResolver getVariableResolver(String name) {
