@@ -39,9 +39,9 @@ public class ConfigurationBuilder {
 	private static final String[] EMPTY_ARGS = new String[0];
 	private static final String HADOOP_CONFIG = "hadoop-conf";
 
-	@Nullable private String m_homeDir = null;
-	@Nullable private File m_configDir = null;
-	@Nullable private String m_lock = null;
+	private @Nullable String m_homeDir = null;
+	private @Nullable File m_configDir = null;
+	private @Nullable String m_lock = null;
 	private String m_runnerMode = "local-mr";
 	private boolean m_runAtCluster = false;
 	

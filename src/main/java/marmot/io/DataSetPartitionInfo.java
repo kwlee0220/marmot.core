@@ -26,7 +26,7 @@ public final class DataSetPartitionInfo implements Serializable {
 															.addColumn("size", DataType.LONG)
 															.build();
 	
-	@Nullable private final Envelope m_bounds;
+	private final @Nullable Envelope m_bounds;
 	private final long m_count;
 	private final long m_size;
 	

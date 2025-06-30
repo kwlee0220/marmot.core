@@ -28,7 +28,7 @@ import utils.stream.FStream;
 public class LeafNode<T extends EnvelopedValue, P extends Partition<T>> extends Node<T,P> {
 	private static final Logger s_logger = LoggerFactory.getLogger(LeafNode.class);
 	
-	@Nullable private final Function<String,P> m_partSupplier;
+	private final @Nullable Function<String,P> m_partSupplier;
 	private final P m_partition;
 	private LeafNode<T,P> m_prev;
 	private LeafNode<T,P> m_next;

@@ -320,7 +320,7 @@ public class MarmotSequenceFile {
 		private final MarmotFileWriteOptions m_opts;
 		private String m_optorName = "MarmotSequenceFile.Store";
 		
-		@Nullable private final GeometryColumnInfo m_gcInfo;
+		private final @Nullable GeometryColumnInfo m_gcInfo;
 		private final int m_geomColIdx;
 		
 		private Envelope m_bounds = new Envelope();

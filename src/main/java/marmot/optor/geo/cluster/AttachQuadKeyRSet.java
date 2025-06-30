@@ -37,13 +37,13 @@ public class AttachQuadKeyRSet extends AbstractRecordSet implements ProgressRepo
 	private final RecordSet m_input;
 	private final GeometryColumnInfo m_gcInfo;
 	private final List<String> m_qkeys;
-	@Nullable private final Envelope m_validRange;
+	private final @Nullable Envelope m_validRange;
 	
 	private final RecordSchema m_outSchema;
 	private final int m_geomIdx;
 	private final int m_quadKeyColIdx;
 	private final int m_mbrColIdx;
-	@Nullable private final CoordinateTransform m_trans;
+	private final @Nullable CoordinateTransform m_trans;
 
 	private final FStream<Record> m_output;
 	private final QuadKeyBinder m_binder;
