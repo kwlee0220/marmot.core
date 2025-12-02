@@ -244,8 +244,7 @@ public class SpatialClusterFile implements QuadClusterFile<SpatialCluster>, Seri
 			long start = fsdos.getPos();
 
 			DataOutputStream dos = new DataOutputStream(pipeOut);
-			copy = IOUtils.copy(Lz4Compressions.compress(pipeIn), fsdos)
-							.closeInputStreamOnFinished(true);
+			copy = IOUtils.copyAsync(Lz4Compressions.compress(pipeIn), fsdos);
 			copy.start();
 			
 			List<Record> duplicateds = Lists.newArrayList();
