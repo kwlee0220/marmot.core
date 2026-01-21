@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.apache.hadoop.conf.Configuration;
@@ -21,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.Utilities;
-import utils.func.FOption;
 import utils.stream.FStream;
 
 /**
@@ -102,11 +102,11 @@ public final class HdfsPath implements Serializable {
 		return getFileSystem().getFileStatus(m_path);
 	}
 	
-	public FOption<HdfsPath> getParent() {
+	public Optional<HdfsPath> getParent() {
 		Path parentPath = m_path.getParent();
 		return (parentPath != null)
-				? FOption.of(new HdfsPath(m_conf, m_fs, parentPath))
-				: FOption.empty();
+				? Optional.of(new HdfsPath(m_conf, m_fs, parentPath))
+				: Optional.empty();
 	}
 	
 	public HdfsPath child(String name) {
@@ -136,7 +136,7 @@ public final class HdfsPath implements Serializable {
 	}
 	
 	public void makeParentDirectory() {
-		FOption<HdfsPath> oparent = getParent();
+		Optional<HdfsPath> oparent = getParent();
 		if ( oparent.isPresent() ) {
 			HdfsPath parent = oparent.get();
 			if ( !parent.exists() ) {
@@ -215,7 +215,7 @@ public final class HdfsPath implements Serializable {
 		}
 
 		return getParent().map(HdfsPath::deleteIfEmptyDirectory)
-							.getOrElse(true);
+							.orElse(true);
 	}
 	
 	private boolean deleteIfEmptyDirectory() {
@@ -226,7 +226,7 @@ public final class HdfsPath implements Serializable {
 				}
 				
 				return getParent().map(HdfsPath::deleteIfEmptyDirectory)
-									.getOrElse(true);
+									.orElse(true);
 			}
 			else {
 				return true;
@@ -243,9 +243,9 @@ public final class HdfsPath implements Serializable {
 		}
 		
 		try {
-			FOption<HdfsPath> oparent = getParent();
+			Optional<HdfsPath> oparent = getParent();
 			if ( oparent.isPresent() ) {
-				HdfsPath parent = oparent.getUnchecked();
+				HdfsPath parent = oparent.get();
 				
 				if ( !parent.exists() ) {
 					if ( !parent.mkdir() ) {
@@ -276,9 +276,9 @@ public final class HdfsPath implements Serializable {
 		}
 
 		try {
-			FOption<HdfsPath> oparent = dst.getParent();
+			Optional<HdfsPath> oparent = dst.getParent();
 			if ( oparent.isPresent() ) {
-				HdfsPath parent = oparent.getUnchecked();
+				HdfsPath parent = oparent.get();
 				if ( !parent.exists() ) {
 					if ( !parent.mkdir() ) {
 						throw new MarmotFileException("fails to create destination's parent directory");

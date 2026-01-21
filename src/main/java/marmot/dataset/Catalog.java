@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,10 +18,6 @@ import org.locationtech.jts.geom.Envelope;
 
 import com.google.common.base.Preconditions;
 
-import marmot.RecordSchema;
-import marmot.geo.catalog.CatalogException;
-import marmot.geo.catalog.DataSetInfo;
-import marmot.io.DataSetPartitionInfo;
 import utils.Utilities;
 import utils.func.CheckedFunctionX;
 import utils.func.FOption;
@@ -28,6 +25,11 @@ import utils.func.Try;
 import utils.io.IOUtils;
 import utils.jdbc.JdbcException;
 import utils.jdbc.JdbcUtils;
+
+import marmot.RecordSchema;
+import marmot.geo.catalog.CatalogException;
+import marmot.geo.catalog.DataSetInfo;
+import marmot.io.DataSetPartitionInfo;
 
 /**
  * 
@@ -97,10 +99,10 @@ public class Catalog {
 			try ( PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_DATASET) ) {
 				String geomCol = info.getGeometryColumnInfo()
 										.map(i -> i.name())
-										.getOrElse("");
+										.orElse("");
 				String srid = info.getGeometryColumnInfo()
 									.map(GeometryColumnInfo::srid)
-									.getOrElse("");
+									.orElse("");
 			
 				pstmt.setString(1, id);
 				pstmt.setString(2, getParentDir(id));
@@ -117,7 +119,7 @@ public class Catalog {
 				}
 				pstmt.setString(9, path);
 				
-				pstmt.setString(10, info.getCompressionCodecName().getOrNull());
+				pstmt.setString(10, info.getCompressionCodecName().orElse(null));
 				pstmt.setLong(11, info.getBlockSize());
 				pstmt.setFloat(12, info.getThumbnailRatio());
 				pstmt.setLong(13, info.getUpdatedMillis());
@@ -315,14 +317,14 @@ public class Catalog {
 		}
 	}
 	
-	public FOption<SpatialIndexCatalogInfo> getSpatialIndexCatalogInfo(String dsId) {
+	public Optional<SpatialIndexCatalogInfo> getSpatialIndexCatalogInfo(String dsId) {
 		dsId = Catalogs.normalize(dsId);
 		
 		try ( Connection conn = getConnection(m_conf);
 			PreparedStatement pstmt = conn.prepareStatement(SQL_GET_SPATIAL_INDEX1); ) {
 			pstmt.setString(1, dsId);
 			
-			return JdbcUtils.fstream(pstmt.executeQuery(), s_toSIInfo).next();
+			return JdbcUtils.fstream(pstmt.executeQuery(), s_toSIInfo).next().toOptional();
 		}
 		catch ( SQLException e ) {
 			throw new CatalogException(e);
@@ -533,7 +535,7 @@ public class Catalog {
 			if ( geomCol.length() > 0 ) {
 				String srid = rs.getString(4);
 				GeometryColumnInfo geomColInfo = new GeometryColumnInfo(geomCol, srid);
-				info.setGeometryColumnInfo(FOption.of(geomColInfo));
+				info.setGeometryColumnInfo(Optional.of(geomColInfo));
 			}
 			info.setBounds(toEnvelope(rs.getString(6)));
 			info.setRecordCount(rs.getLong(7));

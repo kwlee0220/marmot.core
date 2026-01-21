@@ -126,7 +126,7 @@ public class MarmotSequenceFile {
 	public static Writer create(HdfsPath path, RecordSchema schema, @Nullable GeometryColumnInfo gcInfo,
 								MarmotFileWriteOptions opts) {
 		final Configuration conf = path.getConf();
-		Map<String,String> meta = opts.metaData().getOrElse(HashMap::new);
+		Map<String,String> meta = opts.metaData().orElseGet(HashMap::new);
 		
 		StringSubstitutor substitutor = new StringSubstitutor(meta);
 		path = HdfsPath.of(conf, new Path(substitutor.replace(path.toString())));
@@ -138,7 +138,7 @@ public class MarmotSequenceFile {
 										SequenceFile.Writer.valueClass(RecordWritable.class));
 		
 		if ( !opts.appendIfExists() || !path.exists() ) {
-			String codecName = opts.compressionCodecName().getOrNull();
+			String codecName = opts.compressionCodecName().orElse(null);
 			if ( codecName != null ) {
 				CompressionCodec codec = HadoopUtils.getCompressionCodecByName(conf, codecName);
 				optList.add(SequenceFile.Writer.compression(CompressionType.BLOCK, codec));

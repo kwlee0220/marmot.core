@@ -13,12 +13,20 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.hadoop.io.WritableUtils;
+
+import utils.Size2d;
+import utils.Utilities;
+import utils.func.CheckedBiConsumer;
+import utils.func.CheckedConsumerX;
+import utils.func.CheckedFunction;
+import utils.func.CheckedFunctionX;
 
 import marmot.Column;
 import marmot.GRecordSchema;
@@ -28,13 +36,6 @@ import marmot.RecordSetException;
 import marmot.dataset.GeometryColumnInfo;
 import marmot.type.DataType;
 import marmot.type.TypeCode;
-import utils.Size2d;
-import utils.Utilities;
-import utils.func.CheckedBiConsumer;
-import utils.func.CheckedConsumerX;
-import utils.func.CheckedFunction;
-import utils.func.CheckedFunctionX;
-import utils.func.FOption;
 
 
 /**
@@ -385,9 +386,9 @@ public class MarmotSerializers {
 	
 	public static GRecordSchema readGRecordSchema(DataInput in) {
 		boolean flag = readBoolean(in);
-		FOption<GeometryColumnInfo> ogcInfo = (flag)
-											? FOption.of(readGeometryColumnInfo(in))
-											: FOption.empty();
+		Optional<GeometryColumnInfo> ogcInfo = (flag)
+											? Optional.of(readGeometryColumnInfo(in))
+											: Optional.empty();
 		RecordSchema schema = RECORD_SCHEMA.deserialize(in);
 		
 		return new GRecordSchema(ogcInfo, schema);

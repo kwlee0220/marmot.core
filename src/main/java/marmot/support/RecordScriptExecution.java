@@ -1,18 +1,19 @@
 package marmot.support;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.mvel2.integration.VariableResolverFactory;
 import org.mvel2.integration.impl.MapVariableResolverFactory;
 
 import com.google.common.collect.Maps;
 
-import marmot.RecordScript;
-import marmot.RecordScript.ImportInfo;
 import utils.Utilities;
-import utils.func.FOption;
 import utils.script.MVELScript;
 import utils.script.MVELScriptExecution;
+
+import marmot.RecordScript;
+import marmot.RecordScript.ImportInfo;
 
 /**
  * 
@@ -20,7 +21,7 @@ import utils.script.MVELScriptExecution;
  */
 public class RecordScriptExecution {
 	private final MVELScriptExecution m_script;
-	private final FOption<MVELScriptExecution> m_initializer;
+	private final Optional<MVELScriptExecution> m_initializer;
 	private final Map<String,Object> m_arguments;
 	
 	private static final Class<?>[] FUNC_CLASSES = new Class<?>[] {
@@ -37,7 +38,7 @@ public class RecordScriptExecution {
 		Utilities.checkNotNullArgument(rscript, "RecordScript is null");
 		
 		MVELScript script = MVELScript.of(rscript.getScript());
-		FOption<MVELScript> initializer = rscript.getInitializer()
+		Optional<MVELScript> initializer = rscript.getInitializer()
 													.map(MVELScript::of);
 		for ( ImportInfo info: rscript.getImportedClassInfoAll() ) {
 			script.importClass(info.getImportClass(), info.getImportName());
