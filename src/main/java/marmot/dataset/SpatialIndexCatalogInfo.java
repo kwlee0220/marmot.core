@@ -1,6 +1,6 @@
 package marmot.dataset;
 
-import utils.Utilities;
+import utils.Preconditions;
 
 
 /**
@@ -14,9 +14,9 @@ public final class SpatialIndexCatalogInfo {
 	private long m_updatedMillis = -1;
 	
 	public SpatialIndexCatalogInfo(String dsId, GeometryColumnInfo geomCol, String hdfsPath) {
-		Utilities.checkNotNullArgument(dsId, "dataset is null");
-		Utilities.checkNotNullArgument(geomCol, "geomCol is null");
-		Utilities.checkNotNullArgument(hdfsPath, "hdfsPath is null");
+		Preconditions.checkNotNullArgument(dsId, "dataset is null");
+		Preconditions.checkNotNullArgument(geomCol, "geomCol is null");
+		Preconditions.checkNotNullArgument(hdfsPath, "hdfsPath is null");
 		
 		m_dsId = dsId;
 		m_geomCol = geomCol;

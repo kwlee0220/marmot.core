@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+import utils.Preconditions;
+import utils.Tuple;
+import utils.stream.FStream;
+
 import marmot.GRecordSchema;
 import marmot.Record;
 import marmot.RecordSchema;
@@ -19,10 +23,6 @@ import marmot.dataset.GeometryColumnInfo;
 import marmot.geo.CoordinateTransform;
 import marmot.support.EnvelopeTaggedRecord;
 import marmot.type.MapTile;
-
-import utils.Tuple;
-import utils.Utilities;
-import utils.stream.FStream;
 
 /**
  * 
@@ -101,7 +101,7 @@ public class InMemoryQuadClusterFile implements QuadClusterFile<InMemoryQuadClus
 
 	@Override
 	public FStream<String> queryClusterKeys(Envelope range84) {
-		Utilities.checkNotNullArgument(range84, "range is null");
+		Preconditions.checkNotNullArgument(range84, "range is null");
 		
 		return FStream.from(m_clusters.values())
 						.filter(cluster -> cluster.getQuadBounds().intersects(range84))

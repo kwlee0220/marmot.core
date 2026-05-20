@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import utils.CSV;
-import utils.Utilities;
+import utils.Preconditions;
 
 /**
  * 
@@ -28,9 +28,9 @@ public final class KeyColumn {
 	}
 	
 	private KeyColumn(String name, SortOrder sortOrder, NullsOrder nullsOrder) {
-		Utilities.checkNotNullArgument(name, "column name");
-		Utilities.checkNotNullArgument(sortOrder, "sort order");
-		Utilities.checkNotNullArgument(nullsOrder, "nulls order");
+		Preconditions.checkNotNullArgument(name, "column name");
+		Preconditions.checkNotNullArgument(sortOrder, "sort order");
+		Preconditions.checkNotNullArgument(nullsOrder, "nulls order");
 		
 		m_name = name;
 		m_sortOrder = sortOrder;

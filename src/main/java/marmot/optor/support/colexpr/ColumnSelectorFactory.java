@@ -12,6 +12,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import utils.Preconditions;
+import utils.Tuple;
+import utils.stream.FStream;
+
 import marmot.RecordSchema;
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.AliasContext;
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.AllButContext;
@@ -24,10 +28,6 @@ import marmot.optor.support.colexpr.ColumnSelectionExprParser.FullColNameListCon
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.IdListContext;
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.NamespaceContext;
 import marmot.optor.support.colexpr.ColumnSelectionExprParser.SelectionExprContext;
-
-import utils.Tuple;
-import utils.Utilities;
-import utils.stream.FStream;
 
 /**
  * 
@@ -48,13 +48,13 @@ public class ColumnSelectorFactory {
 	}
 	
 	public ColumnSelectorFactory(String columnExpression) {
-		Utilities.checkNotNullArgument(columnExpression, "column expression is null");
+		Preconditions.checkNotNullArgument(columnExpression, "column expression is null");
 		
 		m_colExpr = columnExpression;
 	}
 	
 	public RecordSchema getSourceRecordSchema(String alias) {
-		Utilities.checkNotNullArgument(alias, "RecordSchema alias is null");
+		Preconditions.checkNotNullArgument(alias, "RecordSchema alias is null");
 		
 		return m_schemas.get(alias);
 	}
@@ -64,8 +64,8 @@ public class ColumnSelectorFactory {
 	}
 	
 	public void addRecordSchema(String alias, RecordSchema schema) throws ColumnSelectionException {
-		Utilities.checkNotNullArgument(alias, "RecordSchema alias is null");
-		Utilities.checkNotNullArgument(schema, "RecordSchema is null");
+		Preconditions.checkNotNullArgument(alias, "RecordSchema alias is null");
+		Preconditions.checkNotNullArgument(schema, "RecordSchema is null");
 		
 		if ( m_schemas.putIfAbsent(alias, schema) != null ) {
 			throw new ColumnSelectionException("alias already exists: alias=" + alias);
@@ -75,8 +75,8 @@ public class ColumnSelectorFactory {
 	}
 	
 	public boolean addOrReplaceRecordSchema(String alias, RecordSchema schema) {
-		Utilities.checkNotNullArgument(alias, "RecordSchema alias is null");
-		Utilities.checkNotNullArgument(schema, "RecordSchema is null");
+		Preconditions.checkNotNullArgument(alias, "RecordSchema alias is null");
+		Preconditions.checkNotNullArgument(schema, "RecordSchema is null");
 		
 		boolean added = ( m_schemas.put(alias, schema) == null );
 		m_selectedsCached = null;

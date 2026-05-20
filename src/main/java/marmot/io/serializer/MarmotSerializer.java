@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import utils.Utilities;
+import utils.Preconditions;
 
 
 /**
@@ -40,7 +40,7 @@ public interface MarmotSerializer<T> {
 	}
 
 	public default T fromBytes(byte[] bytes) {
-		Utilities.checkNotNullArgument(bytes, "bytes is null");
+		Preconditions.checkNotNullArgument(bytes, "bytes is null");
 		
 		try ( DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes)) ) {
 			return deserialize(dis);
@@ -60,7 +60,7 @@ public interface MarmotSerializer<T> {
 	}
 	
 	public default byte[] toBytes(T data) {
-		Utilities.checkNotNullArgument(data, "data is null");
+		Preconditions.checkNotNullArgument(data, "data is null");
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try ( DataOutputStream dos = new DataOutputStream(baos) ) {
@@ -74,7 +74,7 @@ public interface MarmotSerializer<T> {
 	}
 
 	public default T fromBase64String(String encoded) {
-		Utilities.checkNotNullArgument(encoded, "Base64 string");
+		Preconditions.checkNotNullArgument(encoded, "Base64 string");
 		
 		return fromBytes(Base64.getDecoder().decode(encoded));
 	}

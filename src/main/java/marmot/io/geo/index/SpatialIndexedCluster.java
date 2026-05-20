@@ -19,6 +19,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
+import utils.Preconditions;
+import utils.UnitUtils;
+import utils.io.IOUtils;
+import utils.io.Lz4Compressions;
+import utils.stream.FStream;
+
 import marmot.GRecordSchema;
 import marmot.io.HdfsPath;
 import marmot.io.geo.cluster.CacheableQuadCluster;
@@ -33,11 +39,6 @@ import marmot.io.serializer.MarmotSerializers;
 import marmot.optor.geo.SpatialRelation;
 import marmot.support.EnvelopeTaggedRecord;
 import marmot.type.MapTile;
-import utils.UnitUtils;
-import utils.Utilities;
-import utils.io.IOUtils;
-import utils.io.Lz4Compressions;
-import utils.stream.FStream;
 
 /**
  * 
@@ -70,8 +71,8 @@ public class SpatialIndexedCluster extends QuadTreeSpatialCluster
 	 */
 	public static SpatialIndexedCluster load(HdfsPath path, long start, long length)
 		throws SpatialIndexedFileException {
-		Utilities.checkNotNullArgument(path, "path is null");
-		Utilities.checkArgument(start >= 0, "invalid offset: " + start);
+		Preconditions.checkNotNullArgument(path, "path is null");
+		Preconditions.checkArgument(start >= 0, "invalid offset: " + start);
 
 		try {
 			byte[] partition = new byte[(int)length];
@@ -91,7 +92,7 @@ public class SpatialIndexedCluster extends QuadTreeSpatialCluster
 									List<EnvelopeTaggedRecord> recordList, long duplicateCount,
 									QuadTree<Pointer, PointerPartition> qtree) {
 		super(quadKey, gschema);
-		Utilities.checkArgument(recordList.size() > 0, "empty records");
+		Preconditions.checkArgument(recordList.size() > 0, "empty records");
 		
 		m_dataBounds = dataBounds;
 		m_records = recordList;

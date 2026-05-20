@@ -21,8 +21,8 @@ import javax.annotation.Nullable;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.hadoop.io.WritableUtils;
 
+import utils.Preconditions;
 import utils.Size2d;
-import utils.Utilities;
 import utils.func.CheckedBiConsumer;
 import utils.func.CheckedConsumerX;
 import utils.func.CheckedFunction;
@@ -461,7 +461,7 @@ public class MarmotSerializers {
 	}
 	
 	public static <T extends MarmotSerializable> byte[] toBytes(T data) {
-		Utilities.checkNotNullArgument(data, "data is null");
+		Preconditions.checkNotNullArgument(data, "data is null");
 		
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -477,7 +477,7 @@ public class MarmotSerializers {
 	}
 	
 	public static <T> byte[] toBytes(T data, CheckedConsumerX<DataOutput,IOException> writer) {
-		Utilities.checkNotNullArgument(data, "data is null");
+		Preconditions.checkNotNullArgument(data, "data is null");
 		
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -493,7 +493,7 @@ public class MarmotSerializers {
 	}
 	
 	public static <T> T fromBytes(byte[] bytes, CheckedFunctionX<DataInput,T,IOException> loader) {
-		Utilities.checkNotNullArgument(bytes, "bytes is null");
+		Preconditions.checkNotNullArgument(bytes, "bytes is null");
 		
 		try {
 			try ( DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes)) ) {
@@ -515,7 +515,7 @@ public class MarmotSerializers {
 	}
 
 	public static <T> T fromBase64String(String encoded, CheckedFunctionX<DataInput,T,IOException> loader) {
-		Utilities.checkNotNullArgument(encoded, "Base64 string");
+		Preconditions.checkNotNullArgument(encoded, "Base64 string");
 		
 		return fromBytes(Base64.getDecoder().decode(encoded), loader);
 	}

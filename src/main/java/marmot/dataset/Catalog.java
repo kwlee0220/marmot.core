@@ -16,15 +16,14 @@ import org.apache.hadoop.fs.Path;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
-import com.google.common.base.Preconditions;
-
-import utils.Utilities;
+import utils.Preconditions;
 import utils.func.CheckedFunctionX;
 import utils.func.FOption;
 import utils.func.Try;
 import utils.io.IOUtils;
 import utils.jdbc.JdbcException;
 import utils.jdbc.JdbcUtils;
+import utils.stream.FStream;
 
 import marmot.RecordSchema;
 import marmot.geo.catalog.CatalogException;
@@ -77,7 +76,7 @@ public class Catalog {
 	}
 	
 	public void insertDataSetInfo(DataSetInfo info) {
-		Utilities.checkNotNullArgument(info, "DataSetInfo should not be null.");
+		Preconditions.checkNotNullArgument(info, "DataSetInfo should not be null.");
 
 		String id = Catalogs.normalize(info.getId());
 		try ( Connection conn = getConnection(m_conf) ) {
@@ -160,8 +159,7 @@ public class Catalog {
 			PreparedStatement pstmt = conn.prepareStatement(SQL_GET_DATASET); ) {
 			pstmt.setString(1, dsId);
 			
-			return FOption.from(JdbcUtils.stream(pstmt.executeQuery(), s_toDsInfo)
-												.findAny());
+			return JdbcUtils.fstream(pstmt.executeQuery(), s_toDsInfo).findFirst();
 		}
 		catch ( SQLException e ) {
 			throw new CatalogException(e);
@@ -171,8 +169,7 @@ public class Catalog {
 	public List<DataSetInfo> getDataSetInfoAll() {
 		try ( Connection conn = getConnection(m_conf);
 			PreparedStatement pstmt = conn.prepareStatement(SQL_GET_DATASET_ALL); ) {
-			return JdbcUtils.stream(pstmt.executeQuery(), s_toDsInfo)
-							.collect(Collectors.toList());
+			return JdbcUtils.fstream(pstmt.executeQuery(), s_toDsInfo).toList();
 		}
 		catch ( SQLException e ) {
 			throw new JdbcException(e);
@@ -194,7 +191,7 @@ public class Catalog {
 		try ( PreparedStatement pstmt = conn.prepareStatement(SQL_IS_FOLDER) ) {
 			pstmt.setString(1, id);
 	
-			return JdbcUtils.stream(pstmt.executeQuery(), s_toCount).findAny().get() > 0;
+			return JdbcUtils.fstream(pstmt.executeQuery(), s_toCount).findFirst().get() > 0;
 		}
 	}
 	
@@ -213,8 +210,7 @@ public class Catalog {
 				pstmt.setString(1, folder);
 			}
 			
-			return JdbcUtils.stream(pstmt.executeQuery(), s_toDsInfo)
-							.collect(Collectors.toList());
+			return JdbcUtils.fstream(pstmt.executeQuery(), s_toDsInfo).toList();
 		}
 		catch ( SQLException e ) {
 			throw new JdbcException(e);
@@ -237,8 +233,7 @@ public class Catalog {
 	public List<String> getDirAll() {
 		try ( Connection conn = getConnection(m_conf);
 			PreparedStatement pstmt = conn.prepareStatement(SQL_GET_FOLDER_ALL); ) {
-			return JdbcUtils.stream(pstmt.executeQuery(), s_toFolder)
-							.collect(Collectors.toList());
+			return JdbcUtils.fstream(pstmt.executeQuery(), s_toFolder).toList();
 		}
 		catch ( SQLException e ) {
 			throw new JdbcException(e);
@@ -262,7 +257,7 @@ public class Catalog {
 			pstmt.setString(1, prefix);
 			pstmt.setString(2, prefix + "%");
 			
-			Stream<String> folderStrm = JdbcUtils.stream(pstmt.executeQuery(), s_toFolder);
+			FStream<String> folderStrm = JdbcUtils.fstream(pstmt.executeQuery(), s_toFolder);
 			if ( !recursive ) {
 				folderStrm = folderStrm.map(name -> name.substring(prefixLen))
 										.map(name -> {
@@ -274,7 +269,7 @@ public class Catalog {
 										})
 										.distinct();
 			}
-			return folderStrm.collect(Collectors.toList());
+			return folderStrm.toList();
 		}
 		catch ( SQLException e ) {
 			throw new JdbcException(e);

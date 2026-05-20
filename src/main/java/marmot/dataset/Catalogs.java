@@ -1,8 +1,6 @@
 package marmot.dataset;
 
-import com.google.common.base.Preconditions;
-
-import utils.Utilities;
+import utils.Preconditions;
 
 /**
  * 
@@ -12,7 +10,7 @@ public class Catalogs {
 	public static final char ID_DELIM = '/';
 	
 	public static String normalize(String dsId) {
-		Utilities.checkNotNullArgument(dsId, "dataset is is null");
+		Preconditions.checkNotNullArgument(dsId, "dataset is is null");
 		
 		dsId = dsId.trim();
 		if ( dsId.length() == 0 || dsId.charAt(0) != ID_DELIM ) {
@@ -26,8 +24,8 @@ public class Catalogs {
 	}
 	
 	public static String toDataSetId(String folder, String name) {
-		Utilities.checkNotNullArgument(folder, "dataset folder is is null");
-		Utilities.checkNotNullArgument(name, "dataset name is is null");
+		Preconditions.checkNotNullArgument(folder, "dataset folder is is null");
+		Preconditions.checkNotNullArgument(name, "dataset name is is null");
 		Preconditions.checkArgument(name.indexOf(ID_DELIM) < 0, "invalid name: " + name);
 		
 		return normalize(folder) + ID_DELIM + name;

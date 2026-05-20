@@ -14,7 +14,7 @@ import org.apache.hadoop.io.compress.CompressionOutputStream;
 
 import com.google.common.collect.Maps;
 
-import utils.Utilities;
+import utils.Preconditions;
 
 /**
  * 
@@ -58,14 +58,14 @@ public class HadoopUtils {
 	}
 	
 	public static CompressionCodec getCompressionCodecByClassName(Configuration conf, String clsName) {
-		Utilities.checkNotNullArgument(conf, "Configuration");
-		Utilities.checkNotNullArgument(clsName, "compression codec class name");
+		Preconditions.checkNotNullArgument(conf, "Configuration");
+		Preconditions.checkNotNullArgument(clsName, "compression codec class name");
 		
 		return new CompressionCodecFactory(conf).getCodecByClassName(clsName);
 	}
 	
 	public static String getCompressionCodecClassByName(String codecName) {
-		Utilities.checkNotNullArgument(codecName, "compression codec name");
+		Preconditions.checkNotNullArgument(codecName, "compression codec name");
 		
 		String clsName = CODECS.get(codecName.toLowerCase());
 		if ( clsName == null ) {
@@ -76,7 +76,7 @@ public class HadoopUtils {
 	}
 	
 	public static CompressionCodec getCompressionCodecByName(Configuration conf, String codecName) {
-		Utilities.checkNotNullArgument(codecName, "compression codec name");
+		Preconditions.checkNotNullArgument(codecName, "compression codec name");
 		
 		String clsName = CODECS.get(codecName.toLowerCase());
 		if ( clsName == null ) {

@@ -8,6 +8,10 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.slf4j.Logger;
 
+import utils.Preconditions;
+import utils.StopWatch;
+import utils.stream.FStream;
+
 import marmot.Record;
 import marmot.RecordSchema;
 import marmot.RecordSet;
@@ -19,9 +23,6 @@ import marmot.rset.AbstractRecordSet;
 import marmot.support.DefaultRecord;
 import marmot.support.ProgressReportable;
 import marmot.type.DataType;
-import utils.StopWatch;
-import utils.Utilities;
-import utils.stream.FStream;
 
 
 /**
@@ -57,9 +58,9 @@ public class AttachQuadKeyRSet extends AbstractRecordSet implements ProgressRepo
 	public AttachQuadKeyRSet(RecordSet input, GeometryColumnInfo gcInfo, List<String> qkeys,
 								@Nullable Envelope validRange, boolean bindOutlier,
 								boolean bindOnlyToOwner) {
-		Utilities.checkNotNullArgument(gcInfo, "GeometryColumnInfo");
-		Utilities.checkNotNullArgument(qkeys, "QueryKey list");
-		Utilities.checkArgument(qkeys.size() > 0, "empty queryKey list");
+		Preconditions.checkNotNullArgument(gcInfo, "GeometryColumnInfo");
+		Preconditions.checkNotNullArgument(qkeys, "QueryKey list");
+		Preconditions.checkArgument(qkeys.size() > 0, "empty queryKey list");
 		
 		m_input = input;
 		m_gcInfo = gcInfo;

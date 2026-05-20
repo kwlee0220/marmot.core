@@ -21,11 +21,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
-import picocli.CommandLine.Option;
-
+import utils.Preconditions;
 import utils.Tuple;
-import utils.Utilities;
 import utils.func.FOption;
+
+import picocli.CommandLine.Option;
 
 
 /**
@@ -53,7 +53,7 @@ public class ConfigurationBuilder {
 
 	@Option(names={"-home"}, paramLabel="path", description={"Marmot home directory"})
 	public ConfigurationBuilder setHomeDir(File dir) {
-		Utilities.checkArgument(dir.isDirectory(), "HomeDir is not a directory: " + dir);
+		Preconditions.checkArgument(dir.isDirectory(), "HomeDir is not a directory: " + dir);
 		
 		return setConfigDir(new File(dir, HADOOP_CONFIG));
 	}
@@ -64,7 +64,7 @@ public class ConfigurationBuilder {
 
 	@Option(names={"-config"}, paramLabel="path", description={"Marmot config directory"})
 	public ConfigurationBuilder setConfigDir(File dir) {
-		Utilities.checkArgument(dir.isDirectory(), "ConfigDir is not a directory: " + dir);
+		Preconditions.checkArgument(dir.isDirectory(), "ConfigDir is not a directory: " + dir);
 		
 		m_configDir = dir;
 		return this;
@@ -105,7 +105,7 @@ public class ConfigurationBuilder {
 	}
 	
 	public Tuple<Configuration,String[]> build(String... args) throws Exception {
-		Utilities.checkNotNullArgument(args != null, "empty arguments");
+		Preconditions.checkNotNullArgument(args != null, "empty arguments");
 		
 		Driver driver = new Driver();
 		ToolRunner.run(driver, args);
@@ -145,7 +145,7 @@ public class ConfigurationBuilder {
 	
 	private Tuple<Configuration,String[]> loader(Configuration conf, String[] applArgs)
 		throws Exception {
-		Utilities.checkNotNullArgument(m_runnerMode != null, "runner mode is not specified");
+		Preconditions.checkNotNullArgument(m_runnerMode != null, "runner mode is not specified");
 		
 		if ( !m_runAtCluster && m_configDir == null ) {
 			setHomeDir(getHomeDir().getOrThrow(() -> new IllegalStateException("Marmot config directory is not specified")));

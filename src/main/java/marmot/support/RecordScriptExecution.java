@@ -8,7 +8,7 @@ import org.mvel2.integration.impl.MapVariableResolverFactory;
 
 import com.google.common.collect.Maps;
 
-import utils.Utilities;
+import utils.Preconditions;
 import utils.script.MVELScript;
 import utils.script.MVELScriptExecution;
 
@@ -35,7 +35,7 @@ public class RecordScriptExecution {
 	}
 
 	private RecordScriptExecution(RecordScript rscript) {
-		Utilities.checkNotNullArgument(rscript, "RecordScript is null");
+		Preconditions.checkNotNullArgument(rscript, "RecordScript is null");
 		
 		MVELScript script = MVELScript.of(rscript.getScript());
 		Optional<MVELScript> initializer = rscript.getInitializer()

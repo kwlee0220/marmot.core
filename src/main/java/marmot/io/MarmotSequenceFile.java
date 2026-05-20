@@ -32,9 +32,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import utils.KeyValue;
+import utils.Preconditions;
 import utils.StopWatch;
 import utils.UnitUtils;
-import utils.Utilities;
 import utils.func.FOption;
 import utils.func.Lazy;
 import utils.io.IOUtils;
@@ -71,7 +71,7 @@ public class MarmotSequenceFile {
 	}
 	
 	private MarmotSequenceFile(HdfsPath path) {
-		Utilities.checkNotNullArgument(path, "path is null");
+		Preconditions.checkNotNullArgument(path, "path is null");
 		
 		m_path = path;
 		m_info = Lazy.of(() -> loadFileInfo(m_path));
@@ -360,7 +360,7 @@ public class MarmotSequenceFile {
 
 		@Override
 		public DataSetPartitionInfo call() {
-			Utilities.checkState(!m_isClosed, "closed already");
+			Preconditions.checkState(!m_isClosed, "closed already");
 
 			m_count = 0;
 			m_writer = MarmotSequenceFile.create(m_path, m_schema, m_gcInfo, m_opts);

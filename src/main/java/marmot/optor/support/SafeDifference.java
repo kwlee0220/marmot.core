@@ -4,11 +4,12 @@ import org.geotools.geometry.jts.Geometries;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.precision.GeometryPrecisionReducer;
 
+import utils.Preconditions;
+import utils.func.FOption;
+
 import marmot.geo.GeoClientUtils;
 import marmot.geo.javageom.JavaGeoms;
 import marmot.support.GeoUtils;
-import utils.Utilities;
-import utils.func.FOption;
 
 /**
  * 
@@ -23,7 +24,7 @@ public class SafeDifference {
 	}
 	
 	public SafeDifference(Geometries resultType) {
-		Utilities.checkNotNullArgument(resultType, "resultType is null");
+		Preconditions.checkNotNullArgument(resultType, "resultType is null");
 		
 		m_resultType = FOption.of(resultType);
 	}

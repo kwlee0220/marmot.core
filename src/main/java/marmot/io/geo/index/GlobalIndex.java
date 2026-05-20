@@ -1,6 +1,6 @@
 package marmot.io.geo.index;
 
-import static utils.Utilities.checkNotNullArgument;
+import static utils.Preconditions.checkNotNullArgument;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -147,7 +147,7 @@ public class GlobalIndex implements MarmotSerializable, Serializable {
 	 * @return	공간 클러스 인덱스
 	 */
 	public GlobalIndexEntry get(String quadKey) {
-		checkNotNullArgument(quadKey);
+		checkNotNullArgument(quadKey, "quadKey is null");
 		
 		return m_indexMap.get(quadKey);
 	}

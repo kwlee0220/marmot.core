@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Lists;
 
 import utils.CSV;
-import utils.Utilities;
+import utils.Preconditions;
 import utils.stream.FStream;
 
 import marmot.Column;
@@ -75,7 +75,7 @@ public final class MultiColumnKey implements Serializable {
 	 * @return 키 존재 여부.
 	 */
 	public boolean existsKeyColumn(String name) {
-		Utilities.checkNotNullArgument(name, "column name");
+		Preconditions.checkNotNullArgument(name, "column name");
 		
 		return m_keyColumns.stream()
 							.anyMatch(col -> col.matches(name));
@@ -90,14 +90,14 @@ public final class MultiColumnKey implements Serializable {
 	}
 	
 	public KeyColumn getKeyColumnAt(int idx) {
-		Utilities.checkArgument(idx >= 0 && idx < m_keyColumns.size(),
-								() -> String.format("invalid column index: %d, this=", idx, this));
+		Preconditions.checkArgument(idx >= 0 && idx < m_keyColumns.size(),
+								"invalid column index: %d, this=%s", idx, this);
 		
 		return m_keyColumns.get(idx);
 	}
 	
 	public KeyColumn getKeyColumn(String name) {
-		Utilities.checkNotNullArgument(name, "column name is null");
+		Preconditions.checkNotNullArgument(name, "column name is null");
 		
 		return m_keyColumns.stream()
 							.filter(col -> col.matches(name))
@@ -105,7 +105,7 @@ public final class MultiColumnKey implements Serializable {
 	}
 	
 	public MultiColumnKey complement(RecordSchema schema) {
-		Utilities.checkNotNullArgument(schema, "schema is null");
+		Preconditions.checkNotNullArgument(schema, "schema is null");
 		
 		return MultiColumnKey.ofNames(schema.complement(getColumnNames())
 											.streamColumns()
@@ -132,7 +132,7 @@ public final class MultiColumnKey implements Serializable {
 	}
 	
 	public static MultiColumnKey fromString(String colSpecList) {
-		Utilities.checkNotNullArgument(colSpecList, "string representation is null");
+		Preconditions.checkNotNullArgument(colSpecList, "string representation is null");
 		
 		List<KeyColumn> keyCols = CSV.parseCsv(colSpecList)
 										.map(KeyColumn::fromString)
@@ -148,7 +148,7 @@ public final class MultiColumnKey implements Serializable {
 	}
 	
 	public static MultiColumnKey concat(MultiColumnKey... keys) {
-		Utilities.checkNotNullArguments(keys, "MultiColumnKey array is null");
+		Preconditions.checkNotNullArgument(keys, "MultiColumnKey array is null");
 		
 		List<KeyColumn> keyCols = FStream.of(keys)
 										.flatMap(k -> FStream.from(k.m_keyColumns))

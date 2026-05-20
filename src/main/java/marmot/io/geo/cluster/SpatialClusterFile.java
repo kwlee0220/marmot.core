@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
-import utils.Utilities;
+import utils.Preconditions;
 import utils.io.IOUtils;
 import utils.io.IOUtils.CopyStream;
 import utils.io.Lz4Compressions;
@@ -73,7 +73,7 @@ public class SpatialClusterFile implements QuadClusterFile<SpatialCluster>, Seri
 	}
 	
 	private SpatialClusterFile(HdfsPath path) {
-		Utilities.checkNotNullArgument(path, "path is null");
+		Preconditions.checkNotNullArgument(path, "path is null");
 		
 		m_path = path;
 		
@@ -156,7 +156,7 @@ public class SpatialClusterFile implements QuadClusterFile<SpatialCluster>, Seri
 
 	@Override
 	public SpatialCluster getCluster(String quadKey) {
-		Utilities.checkNotNullArgument(quadKey, "quadKey is null");
+		Preconditions.checkNotNullArgument(quadKey, "quadKey is null");
 		
 		SpatialClusterInfo scInfo = m_scInfos.get(quadKey);
 		if ( scInfo != null ) {
@@ -168,7 +168,7 @@ public class SpatialClusterFile implements QuadClusterFile<SpatialCluster>, Seri
 	}
 
 	public SpatialClusterInfo getClusterInfo(String quadKey) {
-		Utilities.checkNotNullArgument(quadKey, "quadKey is null");
+		Preconditions.checkNotNullArgument(quadKey, "quadKey is null");
 		
 		SpatialClusterInfo scInfo = m_scInfos.get(quadKey);
 		if ( scInfo != null ) {
@@ -185,7 +185,7 @@ public class SpatialClusterFile implements QuadClusterFile<SpatialCluster>, Seri
 
 	@Override
 	public FStream<String> queryClusterKeys(Envelope range84) {
-		Utilities.checkNotNullArgument(range84, "range is null");
+		Preconditions.checkNotNullArgument(range84, "range is null");
 		
 		return FStream.from(m_scInfos.values())
 						.filter(scInfo -> scInfo.quadBounds().intersects(range84))
@@ -193,7 +193,7 @@ public class SpatialClusterFile implements QuadClusterFile<SpatialCluster>, Seri
 	}
 
 	public FStream<SpatialClusterInfo> queryClusterInfos(Envelope range84) {
-		Utilities.checkNotNullArgument(range84, "range is null");
+		Preconditions.checkNotNullArgument(range84, "range is null");
 		
 		return FStream.from(m_scInfos.values())
 						.filter(scInfo -> scInfo.quadBounds().intersects(range84));

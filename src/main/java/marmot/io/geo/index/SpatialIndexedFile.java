@@ -5,14 +5,15 @@ import java.util.Set;
 
 import org.locationtech.jts.geom.Envelope;
 
+import utils.Preconditions;
+import utils.stream.FStream;
+
 import marmot.GRecordSchema;
 import marmot.RecordSchema;
 import marmot.io.HdfsPath;
 import marmot.io.MarmotFileException;
 import marmot.io.geo.cluster.QuadClusterFile;
 import marmot.optor.support.Match;
-import utils.Utilities;
-import utils.stream.FStream;
 
 /**
  * 
@@ -107,7 +108,7 @@ public class SpatialIndexedFile implements QuadClusterFile<SpatialIndexedCluster
 
 	@Override
 	public SpatialIndexedCluster getCluster(String quadKey) throws SpatialIndexedFileException {
-		Utilities.checkNotNullArgument(quadKey, "quadkey is null");
+		Preconditions.checkNotNullArgument(quadKey, "quadkey is null");
 		
 		GlobalIndexEntry cidx = m_globalIdx.get(quadKey);
 		if ( cidx == null ) {

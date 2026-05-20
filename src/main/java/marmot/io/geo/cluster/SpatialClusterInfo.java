@@ -9,6 +9,8 @@ import java.io.Serializable;
 import org.apache.commons.lang.SerializationException;
 import org.locationtech.jts.geom.Envelope;
 
+import utils.ReflectionUtils;
+
 import marmot.Record;
 import marmot.RecordSchema;
 import marmot.io.DataSetPartitionInfo;
@@ -16,7 +18,6 @@ import marmot.io.serializer.MarmotSerializable;
 import marmot.io.serializer.MarmotSerializers;
 import marmot.support.DefaultRecord;
 import marmot.type.DataType;
-import utils.Utilities;
 
 
 /**
@@ -188,7 +189,7 @@ public final class SpatialClusterInfo implements MarmotSerializable, Serializabl
 		
 		private Object readResolve() {
 			try {
-				SpatialClusterInfo scInfo = Utilities.callPrivateConstructor(SpatialClusterInfo.class);
+				SpatialClusterInfo scInfo = ReflectionUtils.newInstance(SpatialClusterInfo.class);
 				return MarmotSerializers.fromBytes(m_bytes, in -> scInfo.deserialize(in));
 			}
 			catch (Exception e ) {
